@@ -103,23 +103,6 @@
                   (display piece port))
                 pieces))))
 
-;; Define account type constants (compatible with all GnuCash versions)
-(define ACCT-TYPE-ASSET 2)
-(define ACCT-TYPE-BANK 1)
-(define ACCT-TYPE-CASH 3)
-(define ACCT-TYPE-STOCK 5)
-(define ACCT-TYPE-MUTUAL 6)
-(define ACCT-TYPE-LIABILITY 8)
-(define ACCT-TYPE-CREDIT 9)
-(define ACCT-TYPE-PAYABLE 10)
-(define ACCT-TYPE-EXPENSE 12)
-(define ACCT-TYPE-INCOME 11)
-(define ACCT-TYPE-CURRENCY 4)
-(define ACCT-TYPE-EQUITY 13)
-(define ACCT-TYPE-RECEIVABLE 7)
-(define ACCT-TYPE-ROOT 0)
-(define ACCT-TYPE-TRADING 14)
-
 ;; Account type caching optimization
 (define account-type-cache (make-hash-table))
 
