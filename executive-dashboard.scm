@@ -117,8 +117,8 @@
 
 ;; Simple helper functions
 (define (get-account-balance account)
-  "Get current account balance"
-  (xaccAccountGetBalance account))
+  "Get current account balance, converted to the report's default currency."
+  (xaccAccountGetBalanceInCurrency account (gnc-default-currency) #f))
 
 (define (is-placeholder-account? account)
   "Check if account is a placeholder (parent account with no transactions)"
