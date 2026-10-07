@@ -42,25 +42,15 @@ This dashboard bridges the gap between traditional accounting software and moder
 
 ### Basic Installation
 
-1. Save the dashboard file to your GnuCash reports directory:
+1. Run the following comand to get the GnuCash Paths:
 
-   ```
-   ~/Library/Application Support/GnuCash/executive-dashboard.scm
-   ```
+    `gnucash --paths`
 
-   (On Linux: `~/.local/share/gnucash/executive-dashboard.scm`)
+2. Copy the config-user.scm (the loader file) to $GNC_CONFIG_HOME. (e.g. ~/.config/gnucash/config-user.scm)
 
-2. Create a simple loader file at:
+3. Verify that the report can be loaded via:
 
-   ```
-   ~/Library/Application Support/GnuCash/config-user.scm
-   ```
-
-   With the content:
-
-   ```scheme
-   (load (string-append (gnc-build-userdata-path) "/executive-dashboard.scm"))
-   ```
+    `gnucash-cli --report list`
 
 3. Restart GnuCash to load the new report module
 
