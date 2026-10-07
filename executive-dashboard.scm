@@ -36,7 +36,7 @@
 ;;
 ;; CREDIT UTILIZATION SETUP:
 ;; - Place credit cards under "Liabilities:Credit Card"
-;; - Add credit limits to account notes: "limit: $5000"
+;; - Add credit limits to account notes: "limit: €5000"
 ;; - Supports multiple cards with individual tracking
 ;; - Shows portfolio-level utilization and risk assessment
 ;;
@@ -369,7 +369,7 @@
          (formatted-value (cond 
                            ((string=? suffix "%") (format #f "~,2f" value))  ; Show 2 decimal places for percentages
                            ((string=? suffix " months") (format #f "~,1f" value))
-                           ((string=? prefix "$") (format #f "~,2f" value))
+                           ((string=? prefix "€") (format #f "~,2f" value))
                            (else (format #f "~,2f" value)))))
     (format #f 
       "<div class='kpi-card' style='background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #3b82f6; margin-bottom: 15px;'>
@@ -424,8 +424,8 @@
                                                  (= account-type ACCT-TYPE-CREDIT)
                                                  (= account-type ACCT-TYPE-PAYABLE)))))
                                     accounts))
-         (limited-accounts (if (> (length filtered-accounts) 20) 
-                             (list-head filtered-accounts 20) 
+         (limited-accounts (if (> (length filtered-accounts) 300) 
+                             (list-head filtered-accounts 300) 
                              filtered-accounts))
          (account-rows 
           (map
@@ -483,19 +483,19 @@
      ;; Monthly Inflow
      "<div style='text-align: center; padding: 12px; background: #f0fdf4; border-radius: 6px; border: 1px solid #bbf7d0;'>"
      "<div style='color: #16a34a; font-size: 12px; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;'>Monthly Inflow</div>"
-     "<div style='color: #15803d; font-size: 20px; font-weight: bold;'>$" (format #f "~,2f" monthly-inflow) "</div>"
+     "<div style='color: #15803d; font-size: 20px; font-weight: bold;'>€" (format #f "~,2f" monthly-inflow) "</div>"
      "</div>"
      
      ;; Monthly Outflow  
      "<div style='text-align: center; padding: 12px; background: #fef2f2; border-radius: 6px; border: 1px solid #fecaca;'>"
      "<div style='color: #dc2626; font-size: 12px; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;'>Monthly Outflow</div>"
-     "<div style='color: #b91c1c; font-size: 20px; font-weight: bold;'>$" (format #f "~,2f" monthly-outflow) "</div>"
+     "<div style='color: #b91c1c; font-size: 20px; font-weight: bold;'>€" (format #f "~,2f" monthly-outflow) "</div>"
      "</div>"
      
      ;; Net Cash Flow
      "<div style='text-align: center; padding: 12px; background: " (if (> net-cash-flow 0) "#f0f9ff" "#fef2f2") "; border-radius: 6px; border: 1px solid " (if (> net-cash-flow 0) "#bfdbfe" "#fecaca") ";'>"
      "<div style='color: " (if (> net-cash-flow 0) "#2563eb" "#dc2626") "; font-size: 12px; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;'>Net Cash Flow</div>"
-     "<div style='color: " (if (> net-cash-flow 0) "#1d4ed8" "#b91c1c") "; font-size: 20px; font-weight: bold;'>" (if (> net-cash-flow 0) "+" "") "$" (format #f "~,2f" net-cash-flow) "</div>"
+     "<div style='color: " (if (> net-cash-flow 0) "#1d4ed8" "#b91c1c") "; font-size: 20px; font-weight: bold;'>" (if (> net-cash-flow 0) "+" "") "€" (format #f "~,2f" net-cash-flow) "</div>"
      "</div>"
      
      "</div>"
@@ -509,19 +509,6 @@
      "</div>"
      
      ;; Forecast
-     "<div style='border-top: 1px solid #e5e7eb; padding-top: 15px;'>"
-     "<h4 style='margin: 0 0 10px 0; color: #374151; font-size: 14px; font-weight: 600;'>Cash Flow Forecast</h4>"
-     "<div style='display: grid; grid-template-columns: 1fr 1fr; gap: 10px;'>"
-     "<div style='text-align: center; padding: 8px; background: #f3f4f6; border-radius: 4px;'>"
-     "<div style='color: #6b7280; font-size: 12px;'>3 Months</div>"
-     "<div style='color: #111827; font-weight: 600;'>" (if (> forecast-3m 0) "+" "") "$" (format #f "~,2f" forecast-3m) "</div>"
-     "</div>"
-     "<div style='text-align: center; padding: 8px; background: #f3f4f6; border-radius: 4px;'>"
-     "<div style='color: #6b7280; font-size: 12px;'>6 Months</div>"
-     "<div style='color: #111827; font-weight: 600;'>" (if (> forecast-6m 0) "+" "") "$" (format #f "~,2f" forecast-6m) "</div>"
-     "</div>"
-     "</div>"
-     "</div>"
      
      "</div>")))
 
@@ -585,7 +572,7 @@
      ;; Total assets display
      "<div style='text-align: center; margin-bottom: 20px; padding: 15px; background: #f9fafb; border-radius: 6px;'>"
      "<div class='metric-label' style='color: #6b7280; font-size: 12px; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;'>Total Assets</div>"
-     "<div class='metric-value' style='color: #111827; font-size: 28px; font-weight: bold;'>$" (format #f "~,2f" total-assets) "</div>"
+     "<div class='metric-value' style='color: #111827; font-size: 28px; font-weight: bold;'>€" (format #f "~,2f" total-assets) "</div>"
      "</div>"
      
      ;; Allocation bars
@@ -600,7 +587,7 @@
                 "<div style='margin-bottom: 12px;'>"
                 "<div style='display: flex; justify-content: space-between; margin-bottom: 4px;'>"
                 "<span style='color: #374151; font-size: 14px; font-weight: 500;'>" name "</span>"
-                "<span style='color: #6b7280; font-size: 14px;'>$" (format #f "~,0f" value) " (" (format #f "~,1f" pct) "%)</span>"
+                "<span style='color: #6b7280; font-size: 14px;'>€" (format #f "~,1f" value) " (" (format #f "~,1f" pct) "%)</span>"
                 "</div>"
                 "<div style='background: #e5e7eb; border-radius: 4px; height: 24px; overflow: hidden;'>"
                 "<div style='background: " color "; height: 100%; width: " (format #f "~,1f" pct) "%; transition: width 0.3s ease; display: flex; align-items: center; padding-left: 8px;'>"
@@ -648,6 +635,7 @@
                                        total))
                                  0 filtered-accounts))
          ;; Medium Liquidity: Stocks and mutual funds (can be sold within days)
+         ;; TODO: this does not work as it gets the count of stock but not the actual price value in euro. Make it use the price database with the current price
          (medium-liquid-total (fold (lambda (acc total)
                                      (if (or (= (xaccAccountGetType acc) ACCT-TYPE-STOCK)
                                             (= (xaccAccountGetType acc) ACCT-TYPE-MUTUAL))
@@ -707,7 +695,7 @@
      "</svg>"
      ;; Center text
      "<div style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;'>"
-     "<div style='font-size: 32px; font-weight: bold; color: #111827;'>" (format #f "~,0f" liquidity-ratio) "%</div>"
+     "<div style='font-size: 32px; font-weight: bold; color: #111827;'>" (format #f "~,1f" liquidity-ratio) "%</div>"
      "<div style='font-size: 12px; color: #6b7280; margin-top: 4px;'>Liquid Assets</div>"
      "</div>"
      "</div>"
@@ -720,7 +708,7 @@
      "<div style='margin-bottom: 12px;'>"
      "<div style='display: flex; justify-content: space-between; margin-bottom: 4px;'>"
      "<span style='color: #374151; font-size: 14px; font-weight: 500;'>High Liquidity (Cash & Bank)</span>"
-     "<span style='color: #6b7280; font-size: 14px;'>$" (format #f "~,0f" high-liquid-total) " (" (format #f "~,1f" high-liquid-pct) "%)</span>"
+     "<span style='color: #6b7280; font-size: 14px;'>€" (format #f "~,1f" high-liquid-total) " (" (format #f "~,1f" high-liquid-pct) "%)</span>"
      "</div>"
      "<div style='background: #e5e7eb; border-radius: 4px; height: 24px; overflow: hidden;'>"
      "<div style='background: #10b981; height: 100%; width: " (format #f "~,1f" high-liquid-pct) "%; transition: width 0.3s ease; display: flex; align-items: center; padding-left: 8px;'>"
@@ -734,7 +722,7 @@
      "<div style='margin-bottom: 12px;'>"
      "<div style='display: flex; justify-content: space-between; margin-bottom: 4px;'>"
      "<span style='color: #374151; font-size: 14px; font-weight: 500;'>Medium Liquidity (Stocks & Funds)</span>"
-     "<span style='color: #6b7280; font-size: 14px;'>$" (format #f "~,0f" medium-liquid-total) " (" (format #f "~,1f" medium-liquid-pct) "%)</span>"
+     "<span style='color: #6b7280; font-size: 14px;'>€" (format #f "~,1f" medium-liquid-total) " (" (format #f "~,1f" medium-liquid-pct) "%)</span>"
      "</div>"
      "<div style='background: #e5e7eb; border-radius: 4px; height: 24px; overflow: hidden;'>"
      "<div style='background: #3b82f6; height: 100%; width: " (format #f "~,1f" medium-liquid-pct) "%; transition: width 0.3s ease; display: flex; align-items: center; padding-left: 8px;'>"
@@ -748,7 +736,7 @@
      "<div style='margin-bottom: 12px;'>"
      "<div style='display: flex; justify-content: space-between; margin-bottom: 4px;'>"
      "<span style='color: #374151; font-size: 14px; font-weight: 500;'>Low Liquidity (Other Assets)</span>"
-     "<span style='color: #6b7280; font-size: 14px;'>$" (format #f "~,0f" low-liquid-total) " (" (format #f "~,1f" low-liquid-pct) "%)</span>"
+     "<span style='color: #6b7280; font-size: 14px;'>€" (format #f "~,1f" low-liquid-total) " (" (format #f "~,1f" low-liquid-pct) "%)</span>"
      "</div>"
      "<div style='background: #e5e7eb; border-radius: 4px; height: 24px; overflow: hidden;'>"
      "<div style='background: #f59e0b; height: 100%; width: " (format #f "~,1f" low-liquid-pct) "%; transition: width 0.3s ease; display: flex; align-items: center; padding-left: 8px;'>"
@@ -764,50 +752,68 @@
      "<div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; border-top: 1px solid #e5e7eb; padding-top: 15px;'>"
      "<div style='text-align: center; padding: 10px; background: #f0fdf4; border-radius: 6px;'>"
      "<div style='color: #16a34a; font-size: 11px; margin-bottom: 2px;'>Immediate Access</div>"
-     "<div style='color: #15803d; font-size: 16px; font-weight: bold;'>$" (format #f "~,0f" high-liquid-total) "</div>"
+     "<div style='color: #15803d; font-size: 16px; font-weight: bold;'>€" (format #f "~,1f" high-liquid-total) "</div>"
      "</div>"
      "<div style='text-align: center; padding: 10px; background: #eff6ff; border-radius: 6px;'>"
      "<div style='color: #2563eb; font-size: 11px; margin-bottom: 2px;'>Within Days</div>"
-     "<div style='color: #1d4ed8; font-size: 16px; font-weight: bold;'>$" (format #f "~,0f" medium-liquid-total) "</div>"
+     "<div style='color: #1d4ed8; font-size: 16px; font-weight: bold;'>€" (format #f "~,1f" medium-liquid-total) "</div>"
      "</div>"
      "<div style='text-align: center; padding: 10px; background: #fef3c7; border-radius: 6px;'>"
      "<div style='color: #d97706; font-size: 11px; margin-bottom: 2px;'>Hard to Access</div>"
-     "<div style='color: #b45309; font-size: 16px; font-weight: bold;'>$" (format #f "~,0f" low-liquid-total) "</div>"
+     "<div style='color: #b45309; font-size: 16px; font-weight: bold;'>€" (format #f "~,1f" low-liquid-total) "</div>"
      "</div>"
      "</div>"
      
      "</div>")))
 
+(define (get-account-shares-at-date account target-date)
+  "Summe der Split-Amounts (=Stückzahl bei Aktien/Fonds) bis einschließlich target-date."
+  (let ((splits (xaccAccountGetSplitList account)))
+    (fold (lambda (split total)
+            (let* ((trans (xaccSplitGetParent split))
+                   (trans-date (xaccTransGetDate trans)))
+              (if (<= trans-date target-date)
+                  (+ total (gnc-numeric-to-double (xaccSplitGetAmount split)))
+                  total)))
+          0 splits)))
+
+(define (get-account-value-at-date account target-date report-currency)
+  "Wert eines Kontos an einem Stichtag, umgerechnet über den naechstgelegenen Kurs."
+  (let* ((commodity (xaccAccountGetCommodity account))
+         (shares (get-account-shares-at-date account target-date)))
+    (if (gnc-commodity-equiv commodity report-currency)
+        shares  ;; schon in Zielwährung, keine Umrechnung nötig
+        (let* ((book (gnc-account-get-book account))
+               (pricedb (gnc-pricedb-get-db book))
+               (shares-numeric (double-to-gnc-numeric shares 
+                                                       (gnc-commodity-get-fraction commodity) 
+                                                       GNC-RND-ROUND)))
+          (gnc-numeric-to-double
+           (gnc-pricedb-convert-balance-nearest-price-t64
+            pricedb shares-numeric commodity report-currency target-date))))))
+
 (define (calculate-roi-for-period account start-date end-date)
-  "Calculate return on investment for an account over a period"
-  (let* ((splits (xaccAccountGetSplitList account))
-         (start-balance 0)
-         (end-balance (gnc-numeric-to-double (get-account-balance account)))
+  "ROI über Marktwert zu Stichtagen statt über Cost-Basis der Transaktionen."
+  (let* ((report-currency (gnc-default-currency))
+         (start-balance (get-account-value-at-date account start-date report-currency))
+         (end-balance (get-account-value-at-date account end-date report-currency))
+         (splits (xaccAccountGetSplitList account))
          (contributions 0)
          (withdrawals 0))
-    ;; Calculate balances and flows
     (for-each 
      (lambda (split)
        (let* ((trans (xaccSplitGetParent split))
               (trans-date (xaccTransGetDate trans))
-              (amount (gnc-numeric-to-double (xaccSplitGetAmount split))))
-         (cond
-          ;; Transactions before start date contribute to starting balance
-          ((< trans-date start-date)
-           (set! start-balance (+ start-balance amount)))
-          ;; Transactions during period
-          ((and (>= trans-date start-date) (<= trans-date end-date))
+              (amount (gnc-numeric-to-double (xaccSplitGetValue split))))
+         (when (and (>= trans-date start-date) (<= trans-date end-date))
            (if (> amount 0)
                (set! contributions (+ contributions amount))
-               (set! withdrawals (+ withdrawals (abs amount))))))))
+               (set! withdrawals (+ withdrawals (abs amount)))))))
      splits)
-    ;; Calculate ROI: ((End Value - Start Value - Net Contributions) / Start Value) * 100
-    ;; Net contributions = contributions - withdrawals
     (let* ((net-contributions (- contributions withdrawals))
            (gains (- end-balance start-balance net-contributions))
            (roi (if (> (abs start-balance) 0.01)
                    (* (/ gains (abs start-balance)) 100)
-                   ;; If no starting balance, calculate based on contributions
                    (if (> contributions 0)
                        (* (/ gains contributions) 100)
                        0))))
@@ -1003,7 +1009,7 @@
   (let ((name (string-downcase (xaccAccountGetName account))))
     (cond
      ;; Housing & Utilities
-     ((or (string-contains name "rent") (string-contains name "mortgage")
+     ((or (string-contains name "miete") (string-contains name "anschaffungen im haushalt")
           (string-contains name "housing") (string-contains name "utility")
           (string-contains name "utilities") (string-contains name "electric")
           (string-contains name "gas") (string-contains name "water")
@@ -1011,7 +1017,7 @@
           (string-contains name "home") (string-contains name "property"))
       "Housing & Utilities")
      ;; Food & Dining
-     ((or (string-contains name "food") (string-contains name "grocery")
+     ((or (string-contains name "lebensmittel") (string-contains name "grocery")
           (string-contains name "groceries") (string-contains name "dining")
           (string-contains name "restaurant") (string-contains name "meal")
           (string-contains name "coffee") (string-contains name "lunch")
@@ -1031,14 +1037,14 @@
           (string-contains name "vision") (string-contains name "insurance"))
       "Healthcare")
      ;; Entertainment & Recreation
-     ((or (string-contains name "entertainment") (string-contains name "movie")
-          (string-contains name "game") (string-contains name "sport")
+     ((or (string-contains name "unterhaltung") (string-contains name "events")
+          (string-contains name "game") (string-contains name "abos")
           (string-contains name "gym") (string-contains name "fitness")
           (string-contains name "hobby") (string-contains name "recreation")
           (string-contains name "subscription") (string-contains name "streaming"))
       "Entertainment")
      ;; Shopping & Personal
-     ((or (string-contains name "shopping") (string-contains name "clothing")
+     ((or (string-contains name "lola") (string-contains name "clothing")
           (string-contains name "clothes") (string-contains name "personal")
           (string-contains name "beauty") (string-contains name "hair")
           (string-contains name "cosmetic") (string-contains name "retail"))
@@ -1050,8 +1056,8 @@
           (string-contains name "student"))
       "Education")
      ;; Travel
-     ((or (string-contains name "travel") (string-contains name "vacation")
-          (string-contains name "hotel") (string-contains name "flight")
+     ((or (string-contains name "reisen") (string-contains name "bahn")
+          (string-contains name "hotel") (string-contains name "flug")
           (string-contains name "airfare") (string-contains name "trip"))
       "Travel")
      ;; Insurance
@@ -1059,8 +1065,9 @@
           (string-contains name "premium"))
       "Insurance")
      ;; Savings & Investments
-     ((or (string-contains name "saving") (string-contains name "investment")
-          (string-contains name "retirement") (string-contains name "401k")
+     ;;
+     ((or (string-contains name "saving") (string-contains name "Investment")
+          (string-contains name "Aktiendepot") (string-contains name "401k")
           (string-contains name "ira"))
       "Savings & Investments")
      ;; Default category
@@ -1131,12 +1138,12 @@
        "<div style='display: flex; justify-content: space-between; align-items: center;'>"
        "<div>"
        "<div style='color: #6b7280; font-size: 12px; margin-bottom: 4px;'>Period: " (qof-print-date start-date) " to " (qof-print-date end-date) "</div>"
-       "<div style='color: #111827; font-size: 24px; font-weight: bold;'>$" (format #f "~,2f" total-expenses) "</div>"
+       "<div style='color: #111827; font-size: 24px; font-weight: bold;'>€" (format #f "~,2f" total-expenses) "</div>"
        "<div style='color: #6b7280; font-size: 14px; margin-top: 4px;'>Total Expenses</div>"
        "</div>"
        "<div style='text-align: right;'>"
        "<div style='color: #6b7280; font-size: 12px; margin-bottom: 4px;'>Monthly Average</div>"
-       "<div style='color: #374151; font-size: 20px; font-weight: bold;'>$" (format #f "~,2f" monthly-total) "</div>"
+       "<div style='color: #374151; font-size: 20px; font-weight: bold;'>€" (format #f "~,2f" monthly-total) "</div>"
        "</div>"
        "</div>"
        "</div>"
@@ -1156,7 +1163,7 @@
                   "<div style='margin-bottom: 12px;'>"
                   "<div style='display: flex; justify-content: space-between; margin-bottom: 4px;'>"
                   "<span style='color: #374151; font-size: 13px; font-weight: 500;'>" category "</span>"
-                  "<span style='color: #6b7280; font-size: 13px;'>$" (format #f "~,2f" amount) "</span>"
+                  "<span style='color: #6b7280; font-size: 13px;'>€" (format #f "~,2f" amount) "</span>"
                   "</div>"
                   "<div style='position: relative; background: #e5e7eb; border-radius: 4px; height: 28px; overflow: hidden;'>"
                   "<div style='background: " color "; height: 100%; width: " (format #f "~,1f" percentage) "%; transition: width 0.3s ease; display: flex; align-items: center; padding: 0 10px;'>"
@@ -1166,7 +1173,7 @@
                   "</div>"
                   ;; Monthly amount on the right inside the bar
                   (if (> percentage 30)
-                      (build-html-string "<div style='position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: white; font-size: 11px; opacity: 0.9;'>$" (format #f "~,0f" (/ amount period-months)) "/mo</div>")
+                      (build-html-string "<div style='position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: white; font-size: 11px; opacity: 0.9;'>€" (format #f "~,1f" (/ amount period-months)) "/mo</div>")
                       "")
                   "</div>"
                   "</div>")))
@@ -1204,7 +1211,7 @@
        "</div>"
        "<div style='text-align: center; padding: 10px; background: #f9fafb; border-radius: 6px;'>"
        "<div style='color: #6b7280; font-size: 11px; margin-bottom: 2px;'>Daily Average</div>"
-       "<div style='color: #111827; font-size: 18px; font-weight: bold;'>$" (format #f "~,2f" (/ total-expenses period-days)) "</div>"
+       "<div style='color: #111827; font-size: 18px; font-weight: bold;'>€" (format #f "~,2f" (/ total-expenses period-days)) "</div>"
        "</div>"
        "<div style='text-align: center; padding: 10px; background: #f9fafb; border-radius: 6px;'>"
        "<div style='color: #6b7280; font-size: 11px; margin-bottom: 2px;'>Biggest Category</div>"
@@ -1350,7 +1357,7 @@
          "<div style='background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); border-radius: 6px; padding: 15px; margin-bottom: 15px; color: white;'>"
          "<div style='text-align: center;'>"
          "<div style='font-size: 11px; opacity: 0.9; margin-bottom: 4px;'>Current Period Total</div>"
-         "<div style='font-size: 22px; font-weight: bold;'>$" (format #f "~,0f" current-total) "</div>"
+         "<div style='font-size: 22px; font-weight: bold;'>€" (format #f "~,1f" current-total) "</div>"
          (if has-comparison
              (string-append
               "<div style='font-size: 12px; margin-top: 6px; opacity: 0.9;'>"
@@ -1410,7 +1417,7 @@
                           (y-pos (- 85 (* (/ (cadr seg) max-value) 75)))
                           (value (cadr seg)))
                      (string-append
-                      "<div style='position: absolute; left: " (format #f "~,1f" x-pos) "%; top: " (format #f "~,1f" y-pos) "%; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2);' title='$" (format #f "~,0f" value) "'></div>"
+                      "<div style='position: absolute; left: " (format #f "~,1f" x-pos) "%; top: " (format #f "~,1f" y-pos) "%; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2);' title='€" (format #f "~,1f" value) "'></div>"
                       "<div style='position: absolute; left: " (format #f "~,1f" (- x-pos 5)) "%; top: " (format #f "~,1f" (+ y-pos 15)) "%; font-size: 10px; color: #6b7280; text-align: center; width: 18%;'>" (car seg) "</div>")))
                  segments
                  (iota (length segments)))
@@ -1424,7 +1431,7 @@
                               (y-pos (- 85 (* (/ (cadr seg) max-value) 75)))
                               (value (cadr seg)))
                          (string-append
-                          "<div style='position: absolute; left: " (format #f "~,1f" x-pos) "%; top: " (format #f "~,1f" y-pos) "%; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; border: 1px solid white; opacity: 0.7;' title='Previous: $" (format #f "~,0f" value) "'></div>")))
+                          "<div style='position: absolute; left: " (format #f "~,1f" x-pos) "%; top: " (format #f "~,1f" y-pos) "%; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; border: 1px solid white; opacity: 0.7;' title='Previous: €" (format #f "~,1f" value) "'></div>")))
                      comparison-segments
                      (iota (length comparison-segments)))
                  "")
@@ -1467,7 +1474,7 @@
                    "<div style='display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #e5e7eb;'>"
                    "<span style='color: #374151; font-size: 12px;'>" label "</span>"
                    "<div style='text-align: right;'>"
-                   "<span style='color: #111827; font-weight: 600; font-size: 12px;'>$" (format #f "~,0f" value) "</span>"
+                   "<span style='color: #111827; font-weight: 600; font-size: 12px;'>€" (format #f "~,1f" value) "</span>"
                    (if has-comparison
                        (string-append
                         "<br/><span style='color: " (if (> change 0) "#ef4444" "#10b981") "; font-size: 10px;'>"
@@ -1591,9 +1598,9 @@
      "<div style='background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); border-radius: 6px; padding: 15px; margin-bottom: 15px; color: white;'>"
      "<div style='text-align: center;'>"
      "<div style='font-size: 11px; opacity: 0.9; margin-bottom: 4px;'>Current Net Worth</div>"
-     "<div style='font-size: 22px; font-weight: bold;'>$" (format #f "~,0f" nw-current) "</div>"
+     "<div style='font-size: 22px; font-weight: bold;'>€" (format #f "~,1f" nw-current) "</div>"
      "<div style='font-size: 12px; margin-top: 6px; opacity: 0.9;'>"
-     "Monthly Velocity: " (if (> velocity-1m 0) "+" "") "$" (format #f "~,0f" velocity-1m) "/mo"
+     "Monthly Velocity: " (if (> velocity-1m 0) "+" "") "€" (format #f "~,1f" velocity-1m) "/mo"
      "</div>"
      "<div style='font-size: 10px; margin-top: 4px; padding: 3px 6px; background: rgba(255,255,255,0.2); border-radius: 3px; display: inline-block;'>"
      trend-text
@@ -1615,7 +1622,7 @@
      (if (> velocity-1m 0) "#bbf7d0" "#fecaca") ";'>"
      "<div style='color: #6b7280; font-size: 10px; margin-bottom: 3px;'>1 Month</div>"
      "<div style='color: " (if (> velocity-1m 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
-     (if (> velocity-1m 0) "+" "") "$" (format #f "~,0f" velocity-1m)
+     (if (> velocity-1m 0) "+" "") "€" (format #f "~,1f" velocity-1m)
      "</div>"
      "</div>"
      ;; 3 Months
@@ -1625,7 +1632,7 @@
      (if (> velocity-3m 0) "#bbf7d0" "#fecaca") ";'>"
      "<div style='color: #6b7280; font-size: 10px; margin-bottom: 3px;'>3 Month Avg</div>"
      "<div style='color: " (if (> velocity-3m 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
-     (if (> velocity-3m 0) "+" "") "$" (format #f "~,0f" velocity-3m)
+     (if (> velocity-3m 0) "+" "") "€" (format #f "~,1f" velocity-3m)
      "</div>"
      "</div>"
      ;; 6 Months
@@ -1635,7 +1642,7 @@
      (if (> velocity-6m 0) "#bbf7d0" "#fecaca") ";'>"
      "<div style='color: #6b7280; font-size: 10px; margin-bottom: 3px;'>6 Month Avg</div>"
      "<div style='color: " (if (> velocity-6m 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
-     (if (> velocity-6m 0) "+" "") "$" (format #f "~,0f" velocity-6m)
+     (if (> velocity-6m 0) "+" "") "€" (format #f "~,1f" velocity-6m)
      "</div>"
      "</div>"
      ;; 12 Months
@@ -1645,7 +1652,7 @@
      (if (> velocity-1y 0) "#bbf7d0" "#fecaca") ";'>"
      "<div style='color: #6b7280; font-size: 10px; margin-bottom: 3px;'>12 Month Avg</div>"
      "<div style='color: " (if (> velocity-1y 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
-     (if (> velocity-1y 0) "+" "") "$" (format #f "~,0f" velocity-1y)
+     (if (> velocity-1y 0) "+" "") "€" (format #f "~,1f" velocity-1y)
      "</div>"
      "</div>"
      "</div>"
@@ -1657,7 +1664,7 @@
      "<div>"
      "<div style='color: #6b7280; font-size: 11px; margin-bottom: 3px;'>Acceleration</div>"
      "<div style='color: " trend-color "; font-size: 16px; font-weight: bold;'>"
-     (if (> acceleration 0) "+" "") "$" (format #f "~,0f" acceleration) "/mo²"
+     (if (> acceleration 0) "+" "") "€" (format #f "~,1f" acceleration) "/mo²"
      "</div>"
      "</div>"
      "<div style='text-align: center;'>"
@@ -1678,18 +1685,18 @@
      "<div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;'>"
      "<div style='text-align: center; padding: 8px; background: #eff6ff; border-radius: 4px;'>"
      "<div style='color: #2563eb; font-size: 10px; margin-bottom: 2px;'>3 Months</div>"
-     "<div style='color: #1d4ed8; font-size: 13px; font-weight: bold;'>$" 
-     (format #f "~,0f" (+ nw-current (* velocity-1m 3))) "</div>"
+     "<div style='color: #1d4ed8; font-size: 13px; font-weight: bold;'>€" 
+     (format #f "~,1f" (+ nw-current (* velocity-1m 3))) "</div>"
      "</div>"
      "<div style='text-align: center; padding: 8px; background: #eff6ff; border-radius: 4px;'>"
      "<div style='color: #2563eb; font-size: 10px; margin-bottom: 2px;'>6 Months</div>"
-     "<div style='color: #1d4ed8; font-size: 13px; font-weight: bold;'>$" 
-     (format #f "~,0f" (+ nw-current (* velocity-1m 6))) "</div>"
+     "<div style='color: #1d4ed8; font-size: 13px; font-weight: bold;'>€" 
+     (format #f "~,1f" (+ nw-current (* velocity-1m 6))) "</div>"
      "</div>"
      "<div style='text-align: center; padding: 8px; background: #eff6ff; border-radius: 4px;'>"
      "<div style='color: #2563eb; font-size: 10px; margin-bottom: 2px;'>1 Year</div>"
-     "<div style='color: #1d4ed8; font-size: 13px; font-weight: bold;'>$" 
-     (format #f "~,0f" (+ nw-current (* velocity-1m 12))) "</div>"
+     "<div style='color: #1d4ed8; font-size: 13px; font-weight: bold;'>€" 
+     (format #f "~,1f" (+ nw-current (* velocity-1m 12))) "</div>"
      "</div>"
      "</div>"
      "</div>"
@@ -1773,9 +1780,9 @@
      "<div style='background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%); border-radius: 6px; padding: 15px; margin-bottom: 15px; color: white;'>"
      "<div style='text-align: center;'>"
      "<div style='font-size: 11px; opacity: 0.9; margin-bottom: 4px;'>Available Liquid Cash</div>"
-     "<div style='font-size: 22px; font-weight: bold;'>$" (format #f "~,0f" total-liquid-cash) "</div>"
+     "<div style='font-size: 22px; font-weight: bold;'>€" (format #f "~,1f" total-liquid-cash) "</div>"
      "<div style='font-size: 12px; margin-top: 6px; opacity: 0.9;'>"
-     "Float Time: " (format #f "~,0f" float-days) " days"
+     "Float Time: " (format #f "~,1f" float-days) " days"
      "</div>"
      "<div style='font-size: 10px; margin-top: 4px; padding: 3px 6px; background: rgba(255,255,255,0.2); border-radius: 3px; display: inline-block;'>"
      status-text
@@ -1797,7 +1804,7 @@
      (if (> float-days 30) "#bbf7d0" "#fecaca") ";'>"
      "<div style='color: #6b7280; font-size: 10px; margin-bottom: 3px;'>Days</div>"
      "<div style='color: " (if (> float-days 30) "#16a34a" "#dc2626") "; font-size: 16px; font-weight: bold;'>"
-     (format #f "~,0f" float-days)
+     (format #f "~,1f" float-days)
      "</div>"
      "</div>"
      ;; Weeks
@@ -1827,8 +1834,8 @@
      "<div style='background: #f9fafb; border-radius: 6px; padding: 12px; margin-bottom: 12px;'>"
      "<div style='text-align: center;'>"
      "<div style='color: #6b7280; font-size: 11px; margin-bottom: 3px;'>Daily Burn Rate</div>"
-     "<div style='color: #111827; font-size: 18px; font-weight: bold;'>$" (format #f "~,2f" daily-expenses) "/day</div>"
-     "<div style='color: #6b7280; font-size: 11px; margin-top: 4px;'>$" (format #f "~,0f" monthly-expenses) "/month average</div>"
+     "<div style='color: #111827; font-size: 18px; font-weight: bold;'>€" (format #f "~,2f" daily-expenses) "/day</div>"
+     "<div style='color: #6b7280; font-size: 11px; margin-top: 4px;'>€" (format #f "~,1f" monthly-expenses) "/month average</div>"
      "</div>"
      "</div>"
      
@@ -1927,9 +1934,9 @@
      "<div style='background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%); border-radius: 6px; padding: 15px; margin-bottom: 15px; color: white;'>"
      "<div style='text-align: center;'>"
      "<div style='font-size: 11px; opacity: 0.9; margin-bottom: 4px;'>Portfolio Value</div>"
-     "<div style='font-size: 22px; font-weight: bold;'>$" (format #f "~,0f" total-investment) "</div>"
+     "<div style='font-size: 22px; font-weight: bold;'>€" (format #f "~,1f" total-investment) "</div>"
      "<div style='font-size: 12px; margin-top: 6px; opacity: 0.9;'>"
-     "Diversification: " (format #f "~,0f" diversification-score) "/100"
+     "Diversification: " (format #f "~,1f" diversification-score) "/100"
      "</div>"
      "<div style='font-size: 10px; margin-top: 4px; padding: 3px 6px; background: rgba(255,255,255,0.2); border-radius: 3px; display: inline-block;'>"
      status-text
@@ -2114,9 +2121,9 @@
      "<div style='background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-radius: 6px; padding: 15px; margin-bottom: 15px; color: white;'>"
      "<div style='text-align: center;'>"
      "<div style='font-size: 11px; opacity: 0.9; margin-bottom: 4px;'>Current Period Income</div>"
-     "<div style='font-size: 22px; font-weight: bold;'>$" (format #f "~,0f" current-income) "</div>"
+     "<div style='font-size: 22px; font-weight: bold;'>€" (format #f "~,1f" current-income) "</div>"
      "<div style='font-size: 12px; margin-top: 6px; opacity: 0.9;'>"
-     "Monthly: $" (format #f "~,0f" current-monthly) " | YoY: " 
+     "Monthly: €" (format #f "~,1f" current-monthly) " | YoY: " 
      (if (> yoy-growth 0) "+" "") (format #f "~,1f" yoy-growth) "%"
      "</div>"
      "<div style='font-size: 10px; margin-top: 4px; padding: 3px 6px; background: rgba(255,255,255,0.2); border-radius: 3px; display: inline-block;'>"
@@ -2141,7 +2148,7 @@
      "<div style='color: " (if (> period-growth 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
      (if (> period-growth 0) "+" "") (format #f "~,1f" period-growth) "%"
      "</div>"
-     "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>$" (format #f "~,0f" prev-monthly) "/mo</div>"
+     "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>€" (format #f "~,1f" prev-monthly) "/mo</div>"
      "</div>"
      ;; Year over Year
      "<div style='text-align: center; padding: 10px; background: " 
@@ -2152,7 +2159,7 @@
      "<div style='color: " (if (> yoy-growth 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
      (if (> yoy-growth 0) "+" "") (format #f "~,1f" yoy-growth) "%"
      "</div>"
-     "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>$" (format #f "~,0f" yoy-monthly) "/mo</div>"
+     "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>€" (format #f "~,1f" yoy-monthly) "/mo</div>"
      "</div>"
      "</div>"
      "</div>"
@@ -2172,7 +2179,7 @@
           "<div style='color: " (if (> q3m-growth 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
           (if (> q3m-growth 0) "+" "") (format #f "~,1f" q3m-growth) "%"
           "</div>"
-          "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>$" (format #f "~,0f" q3m-monthly) "/mo</div>"
+          "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>€" (format #f "~,1f" q3m-monthly) "/mo</div>"
           "</div>"
           ;; 6 months comparison
           "<div style='text-align: center; padding: 10px; background: " 
@@ -2183,7 +2190,7 @@
           "<div style='color: " (if (> q6m-growth 0) "#16a34a" "#dc2626") "; font-size: 14px; font-weight: bold;'>"
           (if (> q6m-growth 0) "+" "") (format #f "~,1f" q6m-growth) "%"
           "</div>"
-          "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>$" (format #f "~,0f" q6m-monthly) "/mo</div>"
+          "<div style='color: #6b7280; font-size: 9px; margin-top: 2px;'>€" (format #f "~,1f" q6m-monthly) "/mo</div>"
           "</div>"
           "</div>"
           "</div>")
@@ -2218,18 +2225,18 @@
      "<div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;'>"
      "<div style='text-align: center; padding: 8px; background: #f0fdf4; border-radius: 4px;'>"
      "<div style='color: #16a34a; font-size: 10px; margin-bottom: 2px;'>3 Months</div>"
-     "<div style='color: #15803d; font-size: 13px; font-weight: bold;'>$" 
-     (format #f "~,0f" (+ current-monthly (* current-monthly (/ period-growth 100) 0.25))) "</div>"
+     "<div style='color: #15803d; font-size: 13px; font-weight: bold;'>€" 
+     (format #f "~,1f" (+ current-monthly (* current-monthly (/ period-growth 100) 0.25))) "</div>"
      "</div>"
      "<div style='text-align: center; padding: 8px; background: #f0fdf4; border-radius: 4px;'>"
      "<div style='color: #16a34a; font-size: 10px; margin-bottom: 2px;'>6 Months</div>"
-     "<div style='color: #15803d; font-size: 13px; font-weight: bold;'>$" 
-     (format #f "~,0f" (+ current-monthly (* current-monthly (/ period-growth 100) 0.5))) "</div>"
+     "<div style='color: #15803d; font-size: 13px; font-weight: bold;'>€" 
+     (format #f "~,1f" (+ current-monthly (* current-monthly (/ period-growth 100) 0.5))) "</div>"
      "</div>"
      "<div style='text-align: center; padding: 8px; background: #f0fdf4; border-radius: 4px;'>"
      "<div style='color: #16a34a; font-size: 10px; margin-bottom: 2px;'>1 Year</div>"
-     "<div style='color: #15803d; font-size: 13px; font-weight: bold;'>$" 
-     (format #f "~,0f" (+ current-monthly (* current-monthly (/ annualized-growth 100)))) "</div>"
+     "<div style='color: #15803d; font-size: 13px; font-weight: bold;'>€" 
+     (format #f "~,1f" (+ current-monthly (* current-monthly (/ annualized-growth 100)))) "</div>"
      "</div>"
      "</div>"
      "</div>"
@@ -2279,7 +2286,7 @@
                                    ;; Try to get credit limit from account notes or use default
                                    (account-notes (or (xaccAccountGetNotes acc) ""))
                                    (credit-limit (let* ((notes-lower (string-downcase account-notes))
-                                                        (limit-match (string-match "limit:?\\s*\\$?([0-9,]+)" notes-lower)))
+                                                        (limit-match (string-match "limit:?\\s*\\€?([0-9,]+)" notes-lower)))
                                                    (if (and limit-match (match:substring limit-match 1))
                                                        ;; Use explicit credit limit from account notes
                                                        (let ((limit-str (string-delete #\, (match:substring limit-match 1))))
@@ -2353,7 +2360,7 @@
          "<div style='font-size: 11px; opacity: 0.9; margin-bottom: 4px;'>Overall Utilization</div>"
          "<div style='font-size: 22px; font-weight: bold;'>" (format #f "~,1f" overall-utilization) "%</div>"
          "<div style='font-size: 12px; margin-top: 6px; opacity: 0.9;'>"
-         "$" (format #f "~,0f" total-balance) " of $" (format #f "~,0f" total-limit)
+         "€" (format #f "~,1f" total-balance) " of €" (format #f "~,1f" total-limit)
          "</div>"
          "<div style='font-size: 10px; margin-top: 4px; padding: 3px 6px; background: rgba(255,255,255,0.2); border-radius: 3px; display: inline-block;'>"
          trend-icon " " (if (> utilization-change 0) "+" "") (format #f "~,1f" utilization-change) "% vs 3mo"
@@ -2388,7 +2395,7 @@
                     "<div style='background: " bar-color "; height: 100%; width: " (format #f "~,1f" (min util-pct 100)) "%; transition: width 0.3s ease;'></div>"
                     "</div>"
                     "<div style='font-size: 11px; color: #6b7280; margin-top: 2px;'>"
-                    "$" (format #f "~,0f" balance) " / $" (format #f "~,0f" limit)
+                    "€" (format #f "~,1f" balance) " / €" (format #f "~,1f" limit)
                     "</div>"
                     "</div>")))
                credit-data)
@@ -2449,8 +2456,8 @@
     
     ;; Account rows - filter placeholders and limit to first 10 accounts
     (let* ((filtered-accounts (filter (lambda (acc) (not (is-placeholder-account? acc))) accounts))
-           (limited-accounts (if (> (length filtered-accounts) 10) 
-                              (list-head filtered-accounts 10) 
+           (limited-accounts (if (> (length filtered-accounts) 300) 
+                              (list-head filtered-accounts 300) 
                               filtered-accounts)))
       (for-each
        (lambda (account)
@@ -2814,8 +2821,10 @@
                      (gnc-optiondb-lookup-value options gnc:pagename-general "start-date")))
          (end-date (gnc:date-option-absolute-time 
                    (gnc-optiondb-lookup-value options gnc:pagename-general "end-date")))
-         (accounts (or (gnc-optiondb-lookup-value options gnc:pagename-accounts "accounts")
-                       (gnc-account-get-descendants-sorted (gnc-get-current-root-account))))
+         (accounts (let ((selected (gnc-optiondb-lookup-value options gnc:pagename-accounts "accounts")))
+                     (if (or (not selected) (null? selected))
+                       (gnc-account-get-descendants-sorted (gnc-get-current-root-account))
+                       selected)))
          (show-charts (gnc-optiondb-lookup-value options gnc:pagename-display "show-charts"))
          (weekly-view (gnc-optiondb-lookup-value options gnc:pagename-display "weekly-view"))
          (show-advanced (gnc-optiondb-lookup-value options gnc:pagename-display "show-advanced"))
@@ -2853,18 +2862,22 @@
            (total-liabilities (abs (calculate-account-total accounts 
                                                            (list ACCT-TYPE-LIABILITY ACCT-TYPE-CREDIT ACCT-TYPE-PAYABLE))))
            (net-worth (- total-assets total-liabilities))
-           (emergency-account (find-account-by-name-recursive root-account "Emergency"))
+           (emergency-account (find-account-by-name-recursive root-account "Barvermögen"))
+           (emergency-balance (if emergency-account
+                     (gnc-numeric-to-double
+                      (xaccAccountGetBalanceInCurrency emergency-account (gnc-default-currency) #t))
+                     0))
            (emergency-balance (if emergency-account 
                                 (gnc-numeric-to-double (get-account-balance emergency-account))
                                 0))
            ;; Calculate period-specific metrics using transaction data
            (expense-accounts (filter 
                              (lambda (acc) 
-                               (string=? (get-account-type-string acc) "Expense"))
+                               (= (xaccAccountGetType acc) ACCT-TYPE-EXPENSE))
                              accounts))
            (income-accounts (filter 
                             (lambda (acc) 
-                              (string=? (get-account-type-string acc) "Income"))
+                              (= (xaccAccountGetType acc) ACCT-TYPE-INCOME))
                             accounts))
            ;; Calculate actual expenses and income for the selected period
            (period-expenses (fold (lambda (account total)
@@ -2901,26 +2914,28 @@
            (net-income (- monthly-income monthly-expenses))
            (savings-rate (if (> monthly-income 0) (* (/ net-income monthly-income) 100) 0))
            ;; Calculate meaningful change percentages (simplified approach)
+           ;; TODO: what does it compare to? --> compare to real data!
            ;; In a real implementation, these would compare to previous period data
-           (net-worth-change (cond 
-                              ((> net-worth 50000) 2.5)    ; Strong net worth
-                              ((> net-worth 10000) 1.2)    ; Moderate net worth  
-                              ((> net-worth 0) 0.8)        ; Positive net worth
-                              ((= net-worth 0) 0.0)        ; No change
-                              (else -1.5)))                ; Negative net worth
-           (net-worth-trend (cond 
-                             ((= net-worth-change 0) 'neutral)
-                             ((> net-worth-change 0) 'up)
-                             (else 'down)))
-           (expenses-change (cond 
-                             ((= monthly-expenses 0) 0.0)      ; No expenses
-                             ((> monthly-expenses 5000) -2.1)  ; High expenses trending down (good)
-                             ((> monthly-expenses 2000) -0.8)  ; Moderate expenses
-                             (else 1.2)))                      ; Low expenses might be increasing
-           (expenses-trend (cond 
-                            ((= expenses-change 0) 'neutral)
-                            ((< expenses-change 0) 'down)     ; Decreasing expenses = down trend
-                            (else 'up)))                       ; Increasing expenses = up trend
+           ;; TODO use get-account-value-at-date
+           (net-worth-start (calculate-net-worth-at-date accounts start-date))
+           (net-worth-change (if (> (abs net-worth-start) 0.01)
+                               (* (/ (- net-worth net-worth-start) (abs net-worth-start)) 100)
+                               0))
+           (net-worth-trend (cond ((= net-worth-change 0) 'neutral)
+                                  ((> net-worth-change 0) 'up)
+                                  (else 'down)))
+           (period-length (- end-date start-date))
+           (prev-period-expenses (fold (lambda (account total)
+                                         (+ total (abs (calculate-account-transactions-total 
+                                                         account (- start-date period-length) (- start-date 1)))))
+                                       0 expense-accounts))
+           (prev-monthly-expenses (/ prev-period-expenses period-months))
+           (expenses-change (if (> prev-monthly-expenses 0.01)
+                              (* (/ (- monthly-expenses prev-monthly-expenses) prev-monthly-expenses) 100)
+                              0))
+           (expenses-trend (cond ((= expenses-change 0) 'neutral)
+                                 ((< expenses-change 0) 'down)
+                                 (else 'up)))
            (emergency-change (cond 
                               ((>= emergency-months 6) 3.2)   ; Very good emergency fund
                               ((>= emergency-months 3) 1.8)   ; Adequate emergency fund
@@ -2990,24 +3005,13 @@
       (let ((kpi-cards '()))
         ;; Build list of KPI cards based on options
         (when show-net-worth
-          (set! kpi-cards (cons (create-kpi-card "Net Worth" net-worth net-worth-change net-worth-trend "$" "") kpi-cards)))
+          (set! kpi-cards (cons (create-kpi-card "Net Worth" net-worth net-worth-change net-worth-trend "€" "") kpi-cards)))
         (when show-monthly-expenses
-          (set! kpi-cards (cons (create-kpi-card "Monthly Expenses" monthly-expenses expenses-change expenses-trend "$" "") kpi-cards)))
-        (when show-emergency-fund
-          (set! kpi-cards (cons (create-kpi-card "Emergency Fund" emergency-months emergency-change emergency-trend "" " months") kpi-cards)))
+          (set! kpi-cards (cons (create-kpi-card "Monthly Expenses" monthly-expenses expenses-change expenses-trend "€" "") kpi-cards)))
+        ; (when show-emergency-fund
+        ;   (set! kpi-cards (cons (create-kpi-card "Emergency Fund" emergency-months emergency-change emergency-trend "" " months") kpi-cards)))
         (when show-savings-rate
           (set! kpi-cards (cons (create-kpi-card "Savings Rate" savings-rate savings-change savings-trend "" "%") kpi-cards)))
-        
-        ;; Add individual account balance cards if enabled
-        (when (and show-account-cards (eq? account-card-format 'individual))
-          (let* ((filtered-accounts (filter (lambda (acc) (not (is-placeholder-account? acc))) accounts))
-                 (limited-accounts (if (> (length filtered-accounts) 6) 
-                                    (list-head filtered-accounts 6) 
-                                    filtered-accounts)))
-            (for-each
-             (lambda (account)
-               (set! kpi-cards (cons (create-account-balance-card account) kpi-cards)))
-             limited-accounts)))
         
         ;; Only add KPI grid if there are cards to display
         (when (not (null? kpi-cards))
@@ -3030,41 +3034,7 @@
          document
          (gnc:make-html-text "<div class='widgets-row'>"))
         
-        ;; Account List Card
-        (when (and show-account-cards (eq? account-card-format 'list))
-          (gnc:html-document-add-object!
-           document
-           (gnc:make-html-text (create-account-list-card accounts))))
-        
-        ;; Cash Flow Widget  
-        (when show-cash-flow
-          (gnc:html-document-add-object!
-           document
-           (gnc:make-html-text (create-cash-flow-widget cash-flow-data start-date end-date))))
-        
-        ;; Asset Allocation Widget
-        (when show-asset-allocation
-          (gnc:html-document-add-object!
-           document
-           (gnc:make-html-text (create-asset-allocation-widget accounts))))
-        
-        ;; Liquidity Ratio Widget
-        (when show-liquidity-ratio
-          (gnc:html-document-add-object!
-           document
-           (gnc:make-html-text (create-liquidity-ratio-widget accounts))))
-        
-        ;; ROI Widget
-        (when show-roi
-          (gnc:html-document-add-object!
-           document
-           (gnc:make-html-text (create-roi-widget accounts start-date end-date))))
-        
-        ;; Expense Ratio Widget
-        (when show-expense-ratio
-          (gnc:html-document-add-object!
-           document
-           (gnc:make-html-text (create-expense-ratio-widget accounts start-date end-date))))
+        ;; Order in which widgets are shown
         
         ;; Net Worth Velocity Widget
         (when show-net-worth-velocity
@@ -3078,16 +3048,46 @@
            document
            (gnc:make-html-text (create-cash-float-time-widget accounts start-date end-date))))
         
-        ;; Diversification Score Widget
-        (when show-diversification-score
+        ;; ROI Widget
+        (when show-roi
           (gnc:html-document-add-object!
            document
-           (gnc:make-html-text (create-diversification-score-widget accounts))))
+           (gnc:make-html-text (create-roi-widget accounts start-date end-date))))
+        
+        ;; Cash Flow Widget  
+        (when show-cash-flow
+          (gnc:html-document-add-object!
+           document
+           (gnc:make-html-text (create-cash-flow-widget cash-flow-data start-date end-date))))
+        
+        ;; Expense Ratio Widget
+        (when show-expense-ratio
+          (gnc:html-document-add-object!
+           document
+           (gnc:make-html-text (create-expense-ratio-widget accounts start-date end-date))))
         
         (when show-income-growth
           (gnc:html-document-add-object!
            document
            (gnc:make-html-text (create-income-growth-widget accounts start-date end-date show-income-growth-comparison))))
+        
+        ;; Liquidity Ratio Widget
+        (when show-liquidity-ratio
+          (gnc:html-document-add-object!
+           document
+           (gnc:make-html-text (create-liquidity-ratio-widget accounts))))
+        
+        ;; Asset Allocation Widget
+        (when show-asset-allocation
+          (gnc:html-document-add-object!
+           document
+           (gnc:make-html-text (create-asset-allocation-widget accounts))))
+        
+        ;; Diversification Score Widget
+        (when show-diversification-score
+          (gnc:html-document-add-object!
+           document
+           (gnc:make-html-text (create-diversification-score-widget accounts))))
         
         (when show-credit-utilization
           (gnc:html-document-add-object!
@@ -3103,21 +3103,6 @@
         (gnc:html-document-add-object!
          document
          (gnc:make-html-text (create-expense-trend-chart-widget accounts start-date end-date show-expense-trend-comparison))))
-      
-      ;; Account Balances Table (only if cards are disabled)
-      (when (not show-account-cards)
-        (gnc:html-document-add-object!
-         document
-         (gnc:make-html-text "<div class='chart-container'><h2>Account Balances</h2>"))
-        
-        (gnc:html-document-add-object!
-         document
-         (create-account-balance-table accounts))
-        
-        (gnc:html-document-add-object!
-         document
-         (gnc:make-html-text "</div>")))
-      
       document)))
 
 ;; Register the Report
